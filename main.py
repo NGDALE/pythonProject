@@ -1,35 +1,23 @@
-import multiprocessing
 import random
 import sys
 import time
-
+import threading
+import socket
+import keyboard
+import server
 
 # known_peers = [1]
 
 # known_peers.append(1)
 
 
-def create_node(known_peers, this, neighbour):
-    print("node created with numbers: " + str(this) + " and " + str(neighbour))
-
-    if neighbour not in known_peers and neighbour != 0:
-        known_peers.append(neighbour)
-        # known_peers[0] = neighbour
-        print("new node added to known nodes: " + str(neighbour))
-    elif neighbour == 0:
-        print("no new node added to known nodes")
-
-    show_known_peers(known_peers)
 
 
 # def receive_message():
 #     try:
 #         print("receiving message")
 
-
 def main():
-    known_peers = []
-
     while True:
 
         # process = multiprocessing.Process(target=create_node)
@@ -47,9 +35,10 @@ def main():
                     #     case "show known peers":
                     #         show_known_peers(known_peers)
 
-                    process = multiprocessing.Process(target=create_node, args=(known_peers, this, neighbour))
-                    process.start()
-                    process.join()
+                    thread = threading.Thread(target=server.create_node(this, neighbour))
+                    thread.start()
+                    thread.join()
+
         except KeyboardInterrupt:
             sys.exit(0)
 
